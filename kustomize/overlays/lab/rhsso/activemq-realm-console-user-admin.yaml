@@ -1,0 +1,25 @@
+kind: KeycloakUser
+apiVersion: keycloak.org/v1alpha1
+metadata:
+  name: activemq-realm-console-admin
+  labels:
+    lab: amq-sso
+spec:
+  realmSelector:
+    matchLabels:
+      lab: amq-sso
+  user:
+    username: admin
+    firstName: Admin
+    lastName: Hawtio
+    email: admin.hawtio@example.com
+    enabled: true
+    emailVerified: false
+    clientRoles:
+      console-client:
+        - admin
+        # - manager
+        # - user
+        # - viewer
+
+

@@ -1,0 +1,19 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: activemq-realm-client-broker
+spec:
+  realmSelector:
+    matchLabels:
+      lab: amq-sso
+  client:
+    clientId: 'broker-client'
+    secret: client-broker-secret
+    clientAuthenticatorType: client-secret
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: true
+  roles:
+    - name: admin
+      clientRole: true
+    - name: user
+      clientRole: true

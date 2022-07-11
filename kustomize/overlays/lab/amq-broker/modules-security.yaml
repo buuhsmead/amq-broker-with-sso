@@ -1,0 +1,208 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisSecurity
+metadata:
+  name: amq-broker
+spec:
+  # ActiveMQArtemis.metadata.name to apply this ActiveMQArtemisSecurity
+  applyToCrNames:
+    - 'amq-broker'
+  loginModules:
+    keycloakLoginModules:
+      - name: 'console'
+        moduleType: 'bearerToken'
+        configuration:
+          realm: 'activemq'
+          resource: 'console-client'
+          authServerUrl: 'https://keycloak-amq-sso.apps.lab.it-speeltuin.eu/auth/'
+          principalAttribute: 'preferred_username'
+          sslRequired: 'external'
+          confidentialPort: 0
+          publicClient: true
+      - name: 'broker'
+        moduleType: 'directAccess'
+        configuration:
+          realm: 'activemq'
+          resource: 'broker-client'
+          authServerUrl: 'https://keycloak-amq-sso.apps.lab.it-speeltuin.eu/auth/'
+          principalAttribute: 'preferred_username'
+          useResourceRoleMappings: true
+          sslRequired: 'external'
+          confidentialPort: 0
+          credentials:
+            - key: 'secret'
+              value: 'client-broker-secret'
+          # enableBasicAuth: false
+          ## trustStore: Path of a trust store
+          ## trustStorePassword: VerySecret
+          # publicKeyCacheTtl: 86400
+          # proxyUrl: The proxy URL
+          # tokenCookiePath: Cookie path for a cookie store
+          # minTimeBetweenJwksRequests: 10
+          # verifyTokenAudience: false
+          # registerNodeAtStartup: false
+          # registerNodePeriod: 12345
+          # ignoreOauthQueryParameter: false
+          # redirectRewriteRules:
+          #   - key: incoming
+          #     value: /*
+          # realmPublicKey: string
+          # clientKeyStorePassword: VerySecret
+          # tokenStore: Type of token store (session or cookie)
+          # corsMaxAge: 1234
+          # tokenMinimumTimeToLive: 0
+          # corsAllowedHeaders: Access-Control-Allow-Headers header.
+          # clientKeyStore: Path of a client keystore
+          # bearerOnly: false
+          # alwaysRefreshToken: false
+          # clientKeyPassword: Client key password
+          # enableCors: false
+          # corsExposedHeaders: >-
+          #   Access-Control-Expose-Headers header. This should be a
+          #   comma-separated string.
+          # scope: The OAuth2 scope parameter for DirectAccessGrantsLoginModule
+          # publicClient: false
+          # exposeToken: false
+          # allowAnyHostName: false
+          # corsAllowedMethods: Access-Control-Allow-Methods header.
+          # connectionPoolSize: 20
+          # turnOffChangeSessionIdOnLogin: false
+          # disableTrustManager: false
+          # autoDetectBearerOnly: false
+  securityDomains:
+    brokerDomain:
+      name: 'activemq'
+      loginModules:
+      - name: 'broker'
+        flag: 'required'
+        debug: true
+        reload: true
+    consoleDomain:
+      name: 'console'
+      loginModules:
+      - name: 'console'
+        flag: required
+        debug: true
+        reload: true
+  securitySettings:
+    broker:
+      - match: '#'
+        permissions:
+        - operationType: 'createNonDurableQueue'
+          roles:
+          - 'admin'
+        - operationType: 'deleteNonDurableQueue'
+          roles:
+          - 'admin'
+        - operationType: 'createDurableQueue'
+          roles:
+          - 'admin'
+          - 'user'
+        - operationType: 'deleteDurableQueue'
+          roles:
+          - 'admin'
+        - operationType: 'createAddress'
+          roles:
+          - 'admin'
+          - 'user'
+        - operationType: 'deleteAddress'
+          roles:
+          - 'admin'
+        - operationType: 'consume'
+          roles:
+          - 'admin'
+        - operationType: 'browse'
+          roles:
+          - 'admin'
+        - operationType: 'send'
+          roles:
+          - 'admin'
+          - 'user'
+        - operationType: 'manage'
+          roles:
+          - 'admin'
+    management:
+      hawtioRoles:
+        - admin
+        - manager
+        - user
+        - viewer
+      authorisation:
+        allowedList:
+          - domain: hawtio
+        defaultAccess:
+          - roles:
+              - admin
+              - manager
+              - user
+              - viewer
+            method: list*
+          - roles:
+              - admin
+              - manager
+              - user
+              - viewer
+            method: get*
+          - roles:
+              - admin
+              - manager
+              - user
+            method: is*
+          - roles:
+              - admin
+              - manager
+            method: set*
+          - roles:
+              - admin
+              - manager
+              - user
+              - viewer
+            method: browse*
+          - roles:
+              - admin
+              - manager
+              - user
+              - viewer
+            method: count*
+          - roles:
+              - admin
+            method: '*'
+        roleAccess:
+          - accessList:
+              - roles:
+                  - admin
+                  - manager
+                  - user
+                  - viewer
+                method: list*
+              - roles:
+                  - admin
+                  - manager
+                  - user
+                  - viewer
+                method: get*
+              - roles:
+                  - admin
+                  - manager
+                  - user
+                method: is*
+              - roles:
+                  - admin
+                  - manager
+                method: set*
+              - roles:
+                  - admin
+                  - manager
+                  - user
+                  - viewer
+                method: browse*
+              - roles:
+                  - admin
+                  - manager
+                  - user
+                  - viewer
+                method: count*
+              - roles:
+                  - admin
+                method: '*'
+            domain: org.apache.activemq.artemis
+

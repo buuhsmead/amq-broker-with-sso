@@ -1,0 +1,24 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: activemq-realm-client-console
+spec:
+  realmSelector:
+    matchLabels:
+      lab: amq-sso
+  client:
+    clientId: 'console-client'
+    secret: client-console-secret
+    clientAuthenticatorType: client-secret
+    publicClient: true
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: true
+  roles:
+    - name: admin
+      clientRole: true
+    - name: manager
+      clientRole: true
+    - name: user
+      clientRole: true
+    - name: viewer
+      clientRole: true

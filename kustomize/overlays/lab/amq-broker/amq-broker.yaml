@@ -1,0 +1,37 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: amq-broker
+spec:
+  addressSettings: {}
+  console:
+    expose: true
+  deploymentPlan:
+    size: 1
+    requireLogin: true
+    podSecurity: {}
+    resources: {}
+    readinessProbe: {}
+    messageMigration: false
+    extraMounts: {}
+    managementRBACEnabled: true
+    livenessProbe: {}
+    journalType: nio
+    image: placeholder
+    storage: {}
+    jolokiaAgentEnabled: false
+  upgrades:
+    enabled: true
+    minor: true
+  acceptors:
+    - name: coreext
+      expose: true
+      protocols: core
+      port: 61626
+
+
+
+
+      # <acceptor name="artemis">tcp://192.168.1.82.nip.io:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;amqpMinLargeMessageSize=102400;protocols=CORE,AMQP,STOMP,HORNETQ,MQTT,OPENWIRE;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpDuplicateDetection=true;supportAdvisory=false;suppressInternalManagementObjects=false</acceptor>
+
+

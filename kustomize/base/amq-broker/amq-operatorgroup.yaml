@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  annotations:
+    olm.providedAPIs: >-
+      ActiveMQArtemis.v1beta1.broker.amq.io,ActiveMQArtemisAddress.v1beta1.broker.amq.io,ActiveMQArtemisScaledown.v1beta1.broker.amq.io,ActiveMQArtemisSecurity.v1beta1.broker.amq.io
+  name: amq-broker-og
+spec:
+  targetNamespaces:
+    - AMQ_PROJECT_NAME

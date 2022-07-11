@@ -1,0 +1,23 @@
+kind: KeycloakUser
+apiVersion: keycloak.org/v1alpha1
+metadata:
+  name: activemq-realm-user-tinus
+  labels:
+    lab: amq-sso
+spec:
+  realmSelector:
+    matchLabels:
+      lab: amq-sso
+  user:
+    username: tinus
+    firstName: Tinus
+    lastName: Tester
+    email: tinus.tester@example.com
+    enabled: true
+    emailVerified: false
+    clientRoles:
+      broker-client:
+        - user
+        # - admin
+
+
